@@ -2,13 +2,20 @@
 
 $path = "C:\Users\alexandr.kozlov\Desktop\files"
 
-$mask = @("*.txt", "*.doc")
+$mask = @("*.txt","*.xml","*.json","*.html", "*.config")
 
+$valueold = "Deny"
+$valuenew = "DENY"
 
 #find file
 foreach($M in $mask)
 {
-    Get-ChildItem  -Path $path  -Filter $M
+    #replace
+    Get-ChildItem  -Path $path  -Filter $M | foreach {
+        $file = Get-Content -Path $_.FullName
+        $NewFile = $file -replace $valueold, $valuenew
+        $NewFile | Set-Content -Path $_.FullName
+    }
 }
 
 
